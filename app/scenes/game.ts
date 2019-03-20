@@ -109,12 +109,16 @@ export default class GameScene extends Phaser.Scene {
     });
 
 
-    this.load.spritesheet("mage", "assets/mage.png", {
-      frameWidth: 60, frameHeight: 60
+    // this.load.spritesheet("mage", "assets/mage.png", {
+    //   frameWidth: 60, frameHeight: 60
+    // });
+    this.load.spritesheet("mage", "assets/cast.png", {
+      frameWidth: 64, frameHeight: 68, endFrame: 3
     });
     this.load.spritesheet("enemy", "assets/floating_thing.png", {
       frameWidth: 45, frameHeight: 72
     });
+
     this.load.atlas(
       "explosion", "assets/particles/explosion.png", "assets/particles/explosion.json"
     );
@@ -177,6 +181,14 @@ export default class GameScene extends Phaser.Scene {
     );
 
     this.createExplosion();
+    
+    var config = {
+      key: 'castAnimation',
+      frames: this.anims.generateFrameNumbers('mage', { start: 0, end: 3}),
+      frameRate: 20,
+      repeat: 0
+    };
+    this.anims.create(config);
 
     this.input.on(
       "pointerdown", function (pointer) {
@@ -185,6 +197,7 @@ export default class GameScene extends Phaser.Scene {
         this.reticle.y = pointer.y;
         this.reticleCollider.active = true;
         this.createFadeAnimation(this.reticle);
+        this.player.play('castAnimation')
       }, this
     );
   }
