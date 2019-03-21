@@ -345,7 +345,7 @@ export default class GameScene extends Phaser.Scene {
       "pointerdown", function (pointer) {
         text.destroy()
         this.physics.resume()
-        this.scale.startFullScreen()
+        this.game.scale.startFullscreen()
         this.newGame()
       }, this
     );    
