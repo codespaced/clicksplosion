@@ -153,10 +153,10 @@ export default class GameScene extends Phaser.Scene {
     this.createReticle();
 
     this.healthLabel = this.createLabel(
-      this.healthLabel, 100, 10, this.font, 0, 0.5, false, false, "Health: "
+      this.healthLabel, 50, 10, this.font, 0, 0.5, false, false, "Health: "
     ).setDepth(1);
     this.scoreLabel = this.createLabel(
-      this.scoreLabel, this.width - 100, 10, this.font, 1, 0.5, true, true, "Score: "
+      this.scoreLabel, this.width - 50, 10, this.font, 1, 0.5, true, true, "Score: "
     ).setDepth(1);
     this.levelLabel = this.createLabel(
       this.levelLabel, this.centerX, 10, this.font, 0.5, 0.5, false, true, "Level: "
