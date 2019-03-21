@@ -1,3 +1,5 @@
+import {} from 'phaser'
+
 export default class Label extends Phaser.GameObjects.BitmapText {
     value: number = 0;
     buffer: number = 0;
