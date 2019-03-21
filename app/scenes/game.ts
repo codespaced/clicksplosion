@@ -137,7 +137,7 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     /* Create world bounds */
-    this.physics.world.setBounds(0, 0, 1600, 800);
+    //this.physics.world.setBounds(0, 0, 1600, 800);
 
     /* enemies */
     // TODO: Pooling
@@ -146,23 +146,23 @@ export default class GameScene extends Phaser.Scene {
 
     // const background = this.add.image(800, 600, 'background')
     /* player */
-    this.player = this.physics.add.sprite(400, 300, "mage");
+    this.player = this.physics.add.sprite(this.centerX, this.height - 64, "mage");
     this.player
       .setOrigin(0.5, 0.5)
-      .setDisplaySize(60, 60)
+//      .setDisplaySize(64, 64)
       .setCollideWorldBounds(true)
       .setImmovable();
 
     this.createReticle();
 
     this.healthLabel = this.createLabel(
-      this.healthLabel, 50, 10, this.font, 0, 0.5, false, false
+      this.healthLabel, 100, 10, this.font, 0, 0.5, false, false, "Health: "
     ).setDepth(1);
     this.scoreLabel = this.createLabel(
-      this.scoreLabel, 790, 10, this.font, 1, 0.5, true, true
+      this.scoreLabel, this.width - 100, 10, this.font, 1, 0.5, true, true, "Score: "
     ).setDepth(1);
     this.levelLabel = this.createLabel(
-      this.levelLabel, 360, 10, this.font, 0.5, 0.5, false, true
+      this.levelLabel, this.centerX, 10, this.font, 0.5, 0.5, false, true, "Level: "
     ).setDepth(1);
     this.levelNumber = this.add.bitmapText(this.centerX, this.centerY, this.levelNumberFont, '1')
       .setOrigin(0.5, 0.5)
@@ -250,13 +250,14 @@ export default class GameScene extends Phaser.Scene {
           });
 }
 
-  createLabel(label: Label, x, y, font, originX, originY, throttle, countUp) {
+  createLabel(label: Label, x, y, font, originX, originY, throttle, countUp, prefix) {
     label = new Label(this, x, y, font)
       .setOrigin(originX, originY)
       .setVisible(true);
     this.add.existing(label);
     label.throttle = throttle;
     label.countUp = countUp;
+    label.prefix = prefix
     return label;
   }
 

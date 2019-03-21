@@ -25,7 +25,7 @@ export default class Label extends Phaser.GameObjects.BitmapText {
     update() {
         this.setStep(this.buffer)
         this.consumeBuffer();
-        this.text = this.value.toString()
+        this.text = this.prefix + this.value.toString()
         return this.countUp ? this.value + this.buffer : this.value - this.buffer
     }
 
