@@ -345,6 +345,7 @@ export default class GameScene extends Phaser.Scene {
       "pointerdown", function (pointer) {
         text.destroy()
         this.physics.resume()
+        this.scale.startFullScreen()
         this.newGame()
       }, this
     );    
@@ -539,4 +540,5 @@ export default class GameScene extends Phaser.Scene {
     // 5 * (5 + 1) / 2 = 15
     return n * (n + 1) * 0.5;
   }
+
 }
