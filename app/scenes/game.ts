@@ -113,7 +113,7 @@ export default class GameScene extends Phaser.Scene {
     //   frameWidth: 60, frameHeight: 60
     // });
     this.load.spritesheet("mage", "assets/cast.png", {
-      frameWidth: 64, frameHeight: 68, endFrame: 3
+      frameWidth: 57, frameHeight: 67, endFrame: 3
     });
     this.load.spritesheet("enemy", "assets/floating_thing.png", {
       frameWidth: 45, frameHeight: 72
@@ -185,7 +185,7 @@ export default class GameScene extends Phaser.Scene {
     var config = {
       key: 'castAnimation',
       frames: this.anims.generateFrameNumbers('mage', { start: 0, end: 3}),
-      frameRate: 20,
+      frameRate: 10,
       repeat: 0
     };
     this.anims.create(config);
@@ -451,9 +451,12 @@ export default class GameScene extends Phaser.Scene {
       return;
     }
 
-    //let enemy = this.enemies.get(Phaser.Math.Between(-64, 864), Phaser.Math.Between(-64, 0))
+    // select a random quad
+    let quad = [{x0: 0, x1: 0, y0: 0, y1: this.height * 0.6},
+          {x0: 0, x1: this.width, y0: 0, y1: 0},
+          {x0: this.width, x1: this.width, y0: 0, y1: this.height * 0.6}][Math.floor(Math.random() * 3)]
     let enemy = this.physics.add.sprite(
-      Phaser.Math.Between(-64, 864), Phaser.Math.Between(-64, 0), "enemy"
+    Phaser.Math.Between(quad.x0, quad.x1), Phaser.Math.Between(quad.y0, quad.y1), "enemy"
     );
     //if (!enemy) return // None free
     this.enemyCount += 1;
