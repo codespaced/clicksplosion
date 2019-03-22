@@ -108,13 +108,10 @@ export default class GameScene extends Phaser.Scene {
       assetText.destroy();
     });
 
-
-    // this.load.spritesheet("mage", "assets/mage.png", {
-    //   frameWidth: 60, frameHeight: 60
-    // });
     this.load.spritesheet("mage", "assets/cast.png", {
       frameWidth: 57, frameHeight: 67, endFrame: 3
     });
+
     this.load.spritesheet("enemy", "assets/floating_thing.png", {
       frameWidth: 45, frameHeight: 72
     });
@@ -156,10 +153,10 @@ export default class GameScene extends Phaser.Scene {
     this.createReticle();
 
     this.healthLabel = this.createLabel(
-      this.healthLabel, 100, 10, this.font, 0, 0.5, false, false, "Health: "
+      this.healthLabel, 50, 10, this.font, 0, 0.5, false, false, "Health: "
     ).setDepth(1);
     this.scoreLabel = this.createLabel(
-      this.scoreLabel, this.width - 100, 10, this.font, 1, 0.5, true, true, "Score: "
+      this.scoreLabel, this.width - 50, 10, this.font, 1, 0.5, true, true, "Score: "
     ).setDepth(1);
     this.levelLabel = this.createLabel(
       this.levelLabel, this.centerX, 10, this.font, 0.5, 0.5, false, true, "Level: "
@@ -168,7 +165,7 @@ export default class GameScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
       .setDepth(1)
 
-    this.waitForClick('Click to Begin');
+    this.waitForClick('Click\nto\nBegin');
 
     // time delay for enemies
     this.time.addEvent({
