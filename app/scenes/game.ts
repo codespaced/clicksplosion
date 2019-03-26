@@ -1,4 +1,4 @@
-import Label from "../components/label/label";
+import Label from '../components/label/label';
 
 export default class GameScene extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
@@ -12,7 +12,7 @@ export default class GameScene extends Phaser.Scene {
   level = 1;
   levelLabel: Label;
   levelNumber: Phaser.GameObjects.BitmapText;
-  font = "consolasBold";
+  font = 'consolasBold';
   levelNumberFont = 'clarendon'
   explosion: Phaser.GameObjects.Particles.ParticleEmitterManager;
   enabled: boolean = false;
@@ -26,7 +26,7 @@ export default class GameScene extends Phaser.Scene {
    * Warning, poor programming practices ahead.
    */
   // Velocity
-  magic_initial_velocity_multiplier = 70;
+  magic_initial_velocity_multiplier = 150;
   magic_per_level_velocity_multiplier = 15;
   magic_maximum_velocity_multiplier = 500;
   // Enemies
@@ -55,7 +55,7 @@ export default class GameScene extends Phaser.Scene {
   enemy_delay = this.magic_initial_enemy_delay;
 
   constructor() {
-    super({ key: "gameScene", active: true });
+    super({ key: 'gameScene', active: true });
   }
 
   preload() {
@@ -69,38 +69,38 @@ export default class GameScene extends Phaser.Scene {
     progressBox.fillStyle(0x222222, 0.8);
     progressBox.fillRect(240, 270, 320, 50);
     let loadingText = this.make.text({
-      x: this.centerX, y: this.centerY - 50, text: "Loading...", style: {
-        font: "20px monospace", fill: "#ffffff"
+      x: this.centerX, y: this.centerY - 50, text: 'Loading...', style: {
+        font: '20px monospace', fill: '#ffffff'
       }
     });
     loadingText.setOrigin(0.5, 0.5);
     let percentText = this.make.text({
-      x: this.centerX, y: this.centerY - 5, text: "0%", style: {
-        font: "18px monospace", fill: "#ffffff"
+      x: this.centerX, y: this.centerY - 5, text: '0%', style: {
+        font: '18px monospace', fill: '#ffffff'
       }
     });
     percentText.setOrigin(0.5, 0.5);
 
     let assetText = this.make.text({
-      x: this.centerX, y: this.centerY + 50, text: "", style: {
-        font: "18px monospace", fill: "#ffffff"
+      x: this.centerX, y: this.centerY + 50, text: '', style: {
+        font: '18px monospace', fill: '#ffffff'
       }
     });
 
     assetText.setOrigin(0.5, 0.5);
 
-    this.load.on("progress", function (value) {
-      percentText.setText(value * 100 + "%");
+    this.load.on('progress', function (value) {
+      percentText.setText(value * 100 + '%');
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(250, 280, 300 * value, 30);
     });
 
-    this.load.on("fileprogress", function (file) {
-      assetText.setText("Loading asset: " + file.key);
+    this.load.on('fileprogress', function (file) {
+      assetText.setText('Loading asset: ' + file.key);
     });
 
-    this.load.on("complete", function () {
+    this.load.on('complete', function () {
       progressBar.destroy();
       progressBox.destroy();
       loadingText.destroy();
@@ -108,28 +108,34 @@ export default class GameScene extends Phaser.Scene {
       assetText.destroy();
     });
 
-    this.load.spritesheet("mage", "assets/cast.png", {
+    this.load.spritesheet('mage', 'assets/cast.png', {
       frameWidth: 57, frameHeight: 67, endFrame: 3
     });
 
-    this.load.spritesheet("enemy", "assets/floating_thing.png", {
+    this.load.spritesheet('mage_die', 'assets/die.png', {
+      frameWidth: 100, frameHeight: 78, endFrame: 5
+    });
+
+    this.load.spritesheet('enemy', 'assets/floating_thing.png', {
       frameWidth: 45, frameHeight: 72
     });
 
+    this.load.spritesheet('fireball', 'assets/fireball.png')
+
     this.load.atlas(
-      "explosion", "assets/particles/explosion.png", "assets/particles/explosion.json"
+      'explosion', 'assets/particles/explosion.png', 'assets/particles/explosion.json'
     );
 
     this.load.bitmapFont(
-      "clarendon", "assets/fonts/bitmap/clarendon.png", "assets/fonts/bitmap/clarendon.xml"
+      'clarendon', 'assets/fonts/bitmap/clarendon.png', 'assets/fonts/bitmap/clarendon.xml'
     );
     this.load.bitmapFont(
-      "consolasBold", "assets/fonts/consolasBold_0.png", "assets/fonts/consolasBold.fnt"
+      'consolasBold', 'assets/fonts/consolasBold_0.png', 'assets/fonts/consolasBold.fnt'
     );
   }
 
   // init(data) {
-  //   console.debug("init", data, this);
+  //   console.debug('init', data, this);
   // }
 
   create() {
@@ -143,7 +149,7 @@ export default class GameScene extends Phaser.Scene {
 
     // const background = this.add.image(800, 600, 'background')
     /* player */
-    this.player = this.physics.add.sprite(this.centerX, this.height - 64, "mage");
+    this.player = this.physics.add.sprite(this.centerX, this.height - 64, 'mage');
     this.player
       .setOrigin(0.5, 0.5)
 //      .setDisplaySize(64, 64)
@@ -153,13 +159,13 @@ export default class GameScene extends Phaser.Scene {
     this.createReticle();
 
     this.healthLabel = this.createLabel(
-      this.healthLabel, 50, 10, this.font, 0, 0.5, false, false, "Health: "
+      this.healthLabel, 50, 10, this.font, 0, 0.5, false, false, 'Health: '
     ).setDepth(1);
     this.scoreLabel = this.createLabel(
-      this.scoreLabel, this.width - 50, 10, this.font, 1, 0.5, true, true, "Score: "
+      this.scoreLabel, this.width - 50, 10, this.font, 1, 0.5, true, true, 'Score: '
     ).setDepth(1);
     this.levelLabel = this.createLabel(
-      this.levelLabel, this.centerX, 10, this.font, 0.5, 0.5, false, true, "Level: "
+      this.levelLabel, this.centerX, 10, this.font, 0.5, 0.5, false, true, 'Level: '
     ).setDepth(1);
     this.levelNumber = this.add.bitmapText(this.centerX, this.centerY, this.levelNumberFont, '1')
       .setOrigin(0.5, 0.5)
@@ -179,16 +185,32 @@ export default class GameScene extends Phaser.Scene {
 
     this.createExplosion();
     
-    var config = {
+    this.anims.create({
       key: 'castAnimation',
       frames: this.anims.generateFrameNumbers('mage', { start: 0, end: 3}),
       frameRate: 10,
       repeat: 0
-    };
-    this.anims.create(config);
+    });
+
+    this.anims.create({
+      key: 'dieAnimation',
+      frames: this.anims.generateFrameNumbers('mage_die', { start: 0, end: 5}),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    
+    this.anims.create({
+      key: 'fireballAnimation',
+      frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 5}),
+      frameRate: 10,
+      repeat: 0
+    });
+
+
 
     this.input.on(
-      "pointerdown", function (pointer) {
+      'pointerdown', function (pointer) {
         this.explosion.emitParticleAt(pointer.x, pointer.y);
         this.reticle.x = pointer.x;
         this.reticle.y = pointer.y;
@@ -200,10 +222,10 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createExplosion() {
-    this.explosion = this.add.particles("explosion");
+    this.explosion = this.add.particles('explosion');
 
     // this.explosion.createEmitter({
-    //   frame: ["smoke-puff", "cloud", "smoke-puff"],
+    //   frame: ['smoke-puff', 'cloud', 'smoke-puff'],
      //   angle: { min: 240, max: 300 },
      //   speed: { min: 200, max: 300 },
      //   quantity: 6,
@@ -215,7 +237,7 @@ export default class GameScene extends Phaser.Scene {
     // });
 
     // this.explosion.createEmitter({
-    //   frame: "red",
+    //   frame: 'red',
      //   angle: { min: 0, max: 360, steps: 32 },
      //   lifespan: 1000,
      //   speed: 400,
@@ -225,20 +247,20 @@ export default class GameScene extends Phaser.Scene {
     // });
 
     // this.explosion.createEmitter({
-    //   frame: "stone",
+    //   frame: 'stone',
      //   angle: { min: 240, max: 300 },
      //   speed: { min: 400, max: 600 },
      //   quantity: { min: 2, max: 10 },
      //   lifespan: 4000,
      //   alpha: { start: 1, end: 0 },
      //   scale: { min: 0.05, max: 0.4 },
-     //   rotate: { start: 0, end: 360, ease: "Back.easeOut" },
+     //   rotate: { start: 0, end: 360, ease: 'Back.easeOut' },
      //   gravityY: 800,
      //   on: false
     // });
 
     this.explosion.createEmitter({
-      frame: "muzzleflash2",
+      frame: 'muzzleflash2',
         lifespan: 150,
         scale: { start: 1, end: 0 },
         rotate: { start: 0, end: 360 },
@@ -262,7 +284,7 @@ export default class GameScene extends Phaser.Scene {
     let animation = this.add.bitmapText(x, y, this.font, message).setTint(tint);
     parent.add(animation);
     let tween: Phaser.Tweens.Tween = this.add.tween({
-      targets: animation, duration: 750, ease: "Exponential.In", y: y - 50,
+      targets: animation, duration: 750, ease: 'Exponential.In', y: y - 50,
       onComplete: () => {
         animation.destroy();
       }, callbackScope: this
@@ -271,7 +293,7 @@ export default class GameScene extends Phaser.Scene {
 
   createFadeAnimation(gameObject) {
     let tween: Phaser.Tweens.Tween = this.add.tween({
-      targets: gameObject, duration: 100, ease: "Linear", alpha: { getStart: () => 0.5, getEnd: () => 0 }, onComplete: () => {
+      targets: gameObject, duration: 100, ease: 'Linear', alpha: { getStart: () => 0.5, getEnd: () => 0 }, onComplete: () => {
         this.reticleCollider.active = false;
       }, callbackScope: this
     });
@@ -300,7 +322,7 @@ export default class GameScene extends Phaser.Scene {
     enemy.destroy();
     let damage = Math.round(this.level / 2);
     this.createFloatAnimation(
-      enemy.x, enemy.y, "-" + damage, 0xff3333, this.animations
+      enemy.x, enemy.y, '-' + damage, 0xff3333, this.animations
     );
     this.healthLabel.increase(damage);
     this.checkWinLose();
@@ -310,7 +332,7 @@ export default class GameScene extends Phaser.Scene {
     let score = this.level * this.magic_experience_per_enemy_multiplier;
     this.scoreLabel.increase(score);
     this.createFloatAnimation(
-      enemy.x, enemy.y, "+" + score, 0xffff00, this.animations
+      enemy.x, enemy.y, '+' + score, 0xffff00, this.animations
     );
     enemy.destroy();
     this.updateUi();
@@ -327,7 +349,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   die() {
-    console.log("Alas, you have expired.");
+    console.log('Alas, you have expired.');
+    this.player.play('dieAnimation')
     this.waitForClick()
   }
 
@@ -340,7 +363,7 @@ export default class GameScene extends Phaser.Scene {
     .setVisible(true)
     .setStroke('#de77ae', 8); 
     this.input.once(
-      "pointerdown", function (pointer) {
+      'pointerdown', function (pointer) {
         text.destroy()
         this.physics.resume()
         this.newGame()
@@ -379,7 +402,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   levelUp() {
-    //console.log("Congratulations on level " + this.level);
+    //console.log('Congratulations on level ' + this.level);
     this.enabled = false
 
     this.levelNumber.setText('' + this.level)
@@ -453,7 +476,7 @@ export default class GameScene extends Phaser.Scene {
           {x0: 0, x1: this.width, y0: 0, y1: 0},
           {x0: this.width, x1: this.width, y0: 0, y1: this.height * 0.6}][Math.floor(Math.random() * 3)]
     let enemy = this.physics.add.sprite(
-    Phaser.Math.Between(quad.x0, quad.x1), Phaser.Math.Between(quad.y0, quad.y1), "enemy"
+    Phaser.Math.Between(quad.x0, quad.x1), Phaser.Math.Between(quad.y0, quad.y1), 'enemy'
     );
     //if (!enemy) return // None free
     this.enemyCount += 1;
@@ -489,7 +512,7 @@ export default class GameScene extends Phaser.Scene {
   subtract(
     a: Phaser.Geom.Point, b: Phaser.Geom.Point, out?: Phaser.Math.Vector2
   ): Phaser.Math.Vector2 {
-    if (typeof out === "undefined") {
+    if (typeof out === 'undefined') {
       out = new Phaser.Math.Vector2();
     }
     out.x = a.x - b.x;
@@ -514,7 +537,7 @@ export default class GameScene extends Phaser.Scene {
 
   generateReticleTexture() {
     let r = this.reticle_radius;
-    let name = "reticle" + r;
+    let name = 'reticle' + r;
     let color = 0xffff00;
     let thickness = 2;
     let alpha = 1.0;
