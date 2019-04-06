@@ -2,10 +2,11 @@ import Label from '../components/label/label';
 
 export default class GameScene extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
+  fireball: Phaser.Physics.Arcade.Sprite;
   reticle: Phaser.Physics.Arcade.Image;
   enemies: Phaser.Physics.Arcade.Group;
   reticleCollider: Phaser.Physics.Arcade.Collider;
-  enemyCount = 0;
+  enemyCount = 0; 
   healthLabel: Label;
   animations: Phaser.GameObjects.Group;
   scoreLabel: Label;
@@ -120,10 +121,12 @@ export default class GameScene extends Phaser.Scene {
       frameWidth: 45, frameHeight: 72
     });
 
-    this.load.spritesheet('fireball', 'assets/fireball.png')
-
     this.load.atlas(
       'explosion', 'assets/particles/explosion.png', 'assets/particles/explosion.json'
+    );
+
+    this.load.atlas(
+      'bullet', 'assets/particles/bullet_blue.png', 'assets/particles/bullet_blue.json'
     );
 
     this.load.bitmapFont(
@@ -155,6 +158,8 @@ export default class GameScene extends Phaser.Scene {
 //      .setDisplaySize(64, 64)
       .setCollideWorldBounds(true)
       .setImmovable();
+
+    this.fireball = this.physics.add.sprite(300, 50, 'fireball')
 
     this.createReticle();
 
@@ -201,13 +206,19 @@ export default class GameScene extends Phaser.Scene {
 
     
     this.anims.create({
-      key: 'fireballAnimation',
-      frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 5}),
+      key: 'bulletAnimation',
+      frames: this.anims.generateFrameNumbers('bullet_blue', { start: 0, end: 3}),
       frameRate: 10,
-      repeat: 0
+      repeat: -1
     });
 
+    
 
+  //   this.input.keyboard.on('keydown', function (event) {
+
+  //     this. .play('fireballAnimation')
+
+  // }, this);
 
     this.input.on(
       'pointerdown', function (pointer) {
